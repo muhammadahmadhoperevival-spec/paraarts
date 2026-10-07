@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}About | ParaArts{% endblock %}
+{% block content %}
+<section class="page-head"><div class="container"><h1>About ParaArts</h1></div></section>
+<section class="section">
+  <div class="container narrow">
+    <p>ParaArts is a collectibles business focused on vintage coins, natural gemstones, antique collections and original art paintings. We sell to collectors and enthusiasts around the world.</p>
+    <h2>Our promise</h2>
+    <p>We describe every item honestly, with clear photos and condition notes. If a piece is not what you expected, talk to us and we will make it right.</p>
+    <h2>How buying works</h2>
+    <p>Choose a piece, send us an inquiry, and we will reply by email with the total, shipping cost and payment options. Once payment is confirmed, your order is carefully packed and shipped with tracking and insurance.</p>
+    <a class="btn" href="{{ url_for('contact') }}">Get in touch</a>
+  </div>
+</section>
+{% endblock %}

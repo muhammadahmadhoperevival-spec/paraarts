@@ -1,0 +1,12 @@
+<a class="card" href="{{ url_for('product', product_id=p.id) }}">
+  <div class="card-img">
+    <img src="{{ p.image_url }}" alt="{{ p.name }}" loading="lazy">
+    {% if not p.in_stock %}<span class="badge badge-sold">Sold</span>{% endif %}
+  </div>
+  <div class="card-body">
+    <span class="card-cat">{{ p.category }}</span>
+    <h3>{{ p.name }}</h3>
+    <div class="card-meta">{% if p.year %}{{ p.year }}{% endif %}{% if p.year and p.origin %} &middot; {% endif %}{{ p.origin or '' }}</div>
+    <div class="card-price">${{ '%.2f' % p.price }}</div>
+  </div>
+</a>

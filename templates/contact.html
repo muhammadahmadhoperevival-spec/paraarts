@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Contact | ParaArts{% endblock %}
+{% block content %}
+<section class="page-head"><div class="container"><h1>Contact us</h1><p>Questions, custom requests or wholesale: we reply within 24 hours.</p></div></section>
+<section class="section">
+  <div class="container narrow">
+    <form class="form" method="post" action="{{ url_for('inquire') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <input type="hidden" name="back" value="{{ url_for('contact') }}">
+      <input name="name" placeholder="Your name" required>
+      <input type="email" name="email" placeholder="Your email" required>
+      <input name="country" placeholder="Your country">
+      <textarea name="message" rows="6" placeholder="How can we help?" required></textarea>
+      <button class="btn" type="submit">Send message</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

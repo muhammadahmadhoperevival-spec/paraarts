@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <div class="container hero-inner">
+    <p class="eyebrow">Collectibles &middot; Worldwide Shipping</p>
+    <h1>Rare coins, gemstones, antiques &amp; art for serious collectors</h1>
+    <p class="lead">Every piece at ParaArts is carefully selected, honestly described and securely packed for delivery anywhere in the world.</p>
+    <div class="hero-actions">
+      <a class="btn" href="{{ url_for('shop') }}">Browse the collection</a>
+      <a class="btn btn-outline" href="{{ url_for('contact') }}">Ask a question</a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">Shop by category</h2>
+    <div class="cat-grid">
+      {% for c in CATEGORIES %}
+      <a class="cat-card" href="{{ url_for('shop', category=c) }}">
+        <img src="{{ url_for('static', filename='img/placeholder-' ~ CATEGORY_ICONS[c] ~ '.svg') }}" alt="">
+        <h3>{{ c }}</h3>
+        <p>{{ blurbs[c] }}</p>
+        <span class="cat-count">{{ counts[c] }} item{{ '' if counts[c] == 1 else 's' }}</span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section section-tint">
+  <div class="container">
+    <h2 class="section-title">Featured pieces</h2>
+    {% if featured %}
+    <div class="grid">{% for p in featured %}{% include "_card.html" %}{% endfor %}</div>
+    {% else %}<p class="muted">New pieces are coming soon.</p>{% endif %}
+    <div class="center"><a class="btn btn-outline-dark" href="{{ url_for('shop') }}">View all items</a></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container trust">
+    <div><div class="trust-icon">&#10003;</div><h3>Authenticity</h3><p>Each item is described accurately, with condition notes and photos.</p></div>
+    <div><div class="trust-icon">&#9992;</div><h3>Worldwide shipping</h3><p>Tracked, insured delivery to collectors in every country.</p></div>
+    <div><div class="trust-icon">&#9993;</div><h3>Personal service</h3><p>Message us directly and we reply within 24 hours.</p></div>
+  </div>
+</section>
+{% endblock %}

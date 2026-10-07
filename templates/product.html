@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}{{ p.name }} | ParaArts{% endblock %}
+{% block desc %}{{ (p.description or p.name)[:150] }}{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container">
+    <p class="crumbs"><a href="{{ url_for('index') }}">Home</a> / <a href="{{ url_for('shop', category=p.category) }}">{{ p.category }}</a> / {{ p.name }}</p>
+    <div class="product">
+      <div class="product-img"><img src="{{ p.image_url }}" alt="{{ p.name }}"></div>
+      <div class="product-info">
+        <span class="card-cat">{{ p.category }}</span>
+        <h1>{{ p.name }}</h1>
+        <div class="price">${{ '%.2f' % p.price }} <small>USD</small></div>
+        {% if p.in_stock %}<span class="badge badge-ok">Available</span>{% else %}<span class="badge badge-sold">Sold</span>{% endif %}
+        <p class="desc">{{ p.description }}</p>
+        <table class="specs">
+          {% if p.year %}<tr><th>Year / Age</th><td>{{ p.year }}</td></tr>{% endif %}
+          {% if p.origin %}<tr><th>Origin</th><td>{{ p.origin }}</td></tr>{% endif %}
+          {% if p.condition %}<tr><th>Condition</th><td>{{ p.condition }}</td></tr>{% endif %}
+          <tr><th>Shipping</th><td>Worldwide, tracked and insured</td></tr>
+        </table>
+
+        {% if p.in_stock %}
+        <form class="form" method="post" action="{{ url_for('inquire') }}" id="inquiry">
+          <h3>Buy or ask about this piece</h3>
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <input type="hidden" name="product_id" value="{{ p.id }}">
+          <input type="hidden" name="back" value="{{ url_for('product', product_id=p.id) }}">
+          <input name="name" placeholder="Your name" required>
+          <input type="email" name="email" placeholder="Your email" required>
+          <input name="country" placeholder="Your country">
+          <textarea name="message" rows="4" required>I am interested in "{{ p.name }}". Please send me the payment and shipping details.</textarea>
+          <button class="btn" type="submit">Send inquiry</button>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+
+    {% if related %}
+    <h2 class="section-title" style="margin-top:64px">You may also like</h2>
+    <div class="grid">{% for p in related %}{% include "_card.html" %}{% endfor %}</div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

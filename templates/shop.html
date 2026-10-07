@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}{{ category or 'Shop All' }} | ParaArts{% endblock %}
+{% block content %}
+<section class="page-head">
+  <div class="container">
+    <h1>{{ category or 'Shop all items' }}</h1>
+    <p>{{ products|length }} item{{ '' if products|length == 1 else 's' }}</p>
+  </div>
+</section>
+<section class="section">
+  <div class="container">
+    <form class="filters" method="get" action="{{ url_for('shop') }}">
+      <input type="search" name="q" value="{{ q }}" placeholder="Search coins, gemstones, year, country...">
+      <select name="category">
+        <option value="">All categories</option>
+        {% for c in CATEGORIES %}<option value="{{ c }}" {{ 'selected' if c == category }}>{{ c }}</option>{% endfor %}
+      </select>
+      <select name="sort">
+        <option value="new" {{ 'selected' if sort == 'new' }}>Newest</option>
+        <option value="low" {{ 'selected' if sort == 'low' }}>Price: low to high</option>
+        <option value="high" {{ 'selected' if sort == 'high' }}>Price: high to low</option>
+      </select>
+      <button class="btn" type="submit">Filter</button>
+    </form>
+    {% if products %}
+    <div class="grid">{% for p in products %}{% include "_card.html" %}{% endfor %}</div>
+    {% else %}
+    <p class="muted center">No items match your search. <a href="{{ url_for('shop') }}">Clear filters</a></p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

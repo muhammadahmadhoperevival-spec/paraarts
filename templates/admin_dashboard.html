@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Admin | ParaArts{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="admin-head">
+      <h1>Dashboard</h1>
+      <div>
+        <a class="btn" href="{{ url_for('admin_new') }}">+ Add product</a>
+        <a class="btn btn-outline-dark" href="{{ url_for('admin_logout') }}">Log out</a>
+      </div>
+    </div>
+
+    <h2>Products ({{ products|length }})</h2>
+    <div class="table-wrap">
+      <table class="table">
+        <tr><th></th><th>Name</th><th>Category</th><th>Price</th><th>Status</th><th></th></tr>
+        {% for p in products %}
+        <tr>
+          <td><img class="thumb" src="{{ p.image_url }}" alt=""></td>
+          <td>{{ p.name }}{% if p.featured %} <span class="badge badge-ok">Featured</span>{% endif %}</td>
+          <td>{{ p.category }}</td>
+          <td>${{ '%.2f' % p.price }}</td>
+          <td>{{ 'Available' if p.in_stock else 'Sold' }}</td>
+          <td class="actions">
+            <a href="{{ url_for('admin_edit', product_id=p.id) }}">Edit</a>
+            <form method="post" action="{{ url_for('admin_delete', product_id=p.id) }}" onsubmit="return confirm('Delete this product?')">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button class="link-danger" type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+
+    <h2 id="inquiries" style="margin-top:48px">Inquiries ({{ inquiries|length }})</h2>
+    {% if inquiries %}
+    <div class="inquiries">
+      {% for i in inquiries %}
+      <div class="inq {{ 'done' if i.handled }}">
+        <div class="inq-top">
+          <strong>{{ i.name }}</strong> &lt;<a href="mailto:{{ i.email }}">{{ i.email }}</a>&gt;{% if i.country %} &middot; {{ i.country }}{% endif %}
+          <span class="muted">&middot; {{ i.created.strftime('%d %b %Y %H:%M') }} UTC</span>
+        </div>
+        {% if i.product %}<div class="muted">About: <a href="{{ url_for('product', product_id=i.product.id) }}">{{ i.product.name }}</a></div>{% endif %}
+        <p>{{ i.message }}</p>
+        <form method="post" action="{{ url_for('admin_inquiry_toggle', inquiry_id=i.id) }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="btn btn-small btn-outline-dark" type="submit">{{ 'Mark as new' if i.handled else 'Mark as handled' }}</button>
+        </form>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}<p class="muted">No inquiries yet.</p>{% endif %}
+  </div>
+</section>
+{% endblock %}

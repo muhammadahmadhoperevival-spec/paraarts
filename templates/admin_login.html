@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Admin login | ParaArts{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container narrow" style="max-width:420px">
+    <h1>Admin login</h1>
+    <form class="form" method="post">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <input name="username" placeholder="Username" required autofocus>
+      <input type="password" name="password" placeholder="Password" required>
+      <button class="btn" type="submit">Log in</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

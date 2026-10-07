@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}ParaArts | Vintage Coins, Gemstones, Antiques & Art{% endblock %}</title>
+  <meta name="description" content="{% block desc %}ParaArts offers authentic vintage coins, natural gemstones, antique collections and original art paintings, shipped worldwide.{% endblock %}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<header class="site-header">
+  <div class="container nav">
+    <a class="logo" href="{{ url_for('index') }}">Para<span>Arts</span></a>
+    <input type="checkbox" id="menu-toggle" class="menu-toggle">
+    <label for="menu-toggle" class="menu-btn" aria-label="Menu">&#9776;</label>
+    <nav class="menu">
+      <a href="{{ url_for('index') }}">Home</a>
+      <a href="{{ url_for('shop') }}">Shop All</a>
+      {% for c in CATEGORIES %}<a href="{{ url_for('shop', category=c) }}" class="cat-link">{{ c }}</a>{% endfor %}
+      <a href="{{ url_for('about') }}">About</a>
+      <a href="{{ url_for('contact') }}" class="btn btn-small">Contact</a>
+    </nav>
+  </div>
+</header>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  <div class="container flashes">
+    {% for cat, msg in messages %}<div class="flash {{ cat }}">{{ msg }}</div>{% endfor %}
+  </div>
+  {% endif %}
+{% endwith %}
+
+<main>{% block content %}{% endblock %}</main>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <div class="logo logo-light">Para<span>Arts</span></div>
+      <p>Authentic vintage coins, gemstones, antiques and art, carefully described and shipped worldwide.</p>
+    </div>
+    <div>
+      <h4>Shop</h4>
+      {% for c in CATEGORIES %}<a href="{{ url_for('shop', category=c) }}">{{ c }}</a>{% endfor %}
+    </div>
+    <div>
+      <h4>Company</h4>
+      <a href="{{ url_for('about') }}">About us</a>
+      <a href="{{ url_for('contact') }}">Contact</a>
+      <a href="{{ url_for('admin_login') }}">Admin</a>
+    </div>
+  </div>
+  <div class="container copyright">&copy; {{ year }} ParaArts. All rights reserved.</div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Add' if new else 'Edit' }} product | ParaArts{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container narrow">
+    <h1>{{ 'Add product' if new else 'Edit product' }}</h1>
+    <form class="form" method="post" enctype="multipart/form-data">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <label>Name<input name="name" value="{{ p.name or '' }}" required></label>
+      <label>Category
+        <select name="category">
+          {% for c in CATEGORIES %}<option value="{{ c }}" {{ 'selected' if p.category == c }}>{{ c }}</option>{% endfor %}
+        </select>
+      </label>
+      <label>Price (USD)<input type="number" step="0.01" min="0" name="price" value="{{ p.price or '' }}" required></label>
+      <div class="row">
+        <label>Year / Age<input name="year" value="{{ p.year or '' }}"></label>
+        <label>Origin / Country<input name="origin" value="{{ p.origin or '' }}"></label>
+      </div>
+      <label>Condition / Grade<input name="condition" value="{{ p.condition or '' }}"></label>
+      <label>Description<textarea name="description" rows="5">{{ p.description or '' }}</textarea></label>
+      <label>Photo (JPG, PNG or WEBP){% if p.image %}<br><img class="thumb" src="{{ p.image_url }}" alt="">{% endif %}
+        <input type="file" name="image" accept="image/*">
+      </label>
+      <label class="check"><input type="checkbox" name="featured" {{ 'checked' if p.featured }}> Show on home page (featured)</label>
+      <label class="check"><input type="checkbox" name="in_stock" {{ 'checked' if p.in_stock }}> Available for sale</label>
+      <div>
+        <button class="btn" type="submit">Save</button>
+        <a class="btn btn-outline-dark" href="{{ url_for('admin_dashboard') }}">Cancel</a>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}
